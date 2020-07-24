@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The NATS Authors
+ * Copyright 2018-2020 The NATS Authors
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,52 +13,38 @@
  * limitations under the License.
  */
 
-export function dump(buf: Buffer, msg?: string): void {
-    if (msg) {
-        console.log(msg);
+export function encode(bytes: Uint8Array): string {
+  return btoa(String.fromCharCode(...bytes));
+}
+
+export function decode(b64str: string) {
+  // if we were URL encoded, some characters will be
+  // wrong - replace underscores and - with / and +
+  b64str = b64str.split("_").join("/");
+  b64str = b64str.split("-").join("+");
+
+  const bin = atob(b64str);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) {
+    bytes[i] = bin.charCodeAt(i);
+  }
+  return bytes;
+}
+
+export function dump(buf: Uint8Array, msg?: string): void {
+  if (msg) {
+    console.log(msg);
+  }
+  let a: string[] = [];
+  for (let i = 0; i < buf.byteLength; i++) {
+    if (i % 8 === 0) {
+      a.push("\n");
     }
-    let a: string[] = [];
-    for (let i = 0; i < buf.byteLength; i++) {
-        if (i % 8 === 0) {
-            a.push('\n');
-        }
-        let v = buf[i].toString(16);
-        if (v.length === 1) {
-            v = '0' + v;
-        }
-        a.push(v);
+    let v = buf[i].toString(16);
+    if (v.length === 1) {
+      v = "0" + v;
     }
-    console.log(a.join('  '));
-}
-
-export interface ToArrayBuffer {
-    (buf: Buffer): ArrayBuffer;
-}
-
-function node6(buf: Buffer): ArrayBuffer {
-    // @ts-ignore
-    return buf;
-}
-
-function node8(buf: Buffer): ArrayBuffer {
-    return buf.buffer;
-}
-
-function parseNodeVersion() : number {
-    let ma = process.version.match(/^v(\d+).+/i);
-    if(ma && ma.length > 1) {
-        return parseInt(ma[1], 10);
-    }
-    return 0;
-}
-
-// Node < 8 needs different handling on how a Buffer
-// is converted to ArrayBuffer. These older nodes
-// don't have the '.buffer' property.
-export function toArrayBuffer(): ToArrayBuffer {
-    if(parseNodeVersion() < 8) {
-        return node6;
-    } else {
-        return node8;
-    }
+    a.push(v);
+  }
+  console.log(a.join("  "));
 }

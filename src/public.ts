@@ -13,38 +13,38 @@
  * limitations under the License.
  */
 
-import ed25519 = require('tweetnacl');
-import {Codec} from "./codec";
-import {KeyPair, NKeysError, NKeysErrorCode} from "./nkeys";
+import { sign_detached_verify } from "../deps/deps.js";
+import { Codec } from "./codec.ts";
+import { KeyPair, NKeysError, NKeysErrorCode } from "./nkeys.ts";
 
 /**
  * KeyPair capable of verifying only
  */
 export class PublicKey implements KeyPair {
-    publicKey: Buffer;
+  publicKey: Uint8Array;
 
-    constructor(publicKey: Buffer) {
-        this.publicKey = publicKey;
-    }
+  constructor(publicKey: Uint8Array) {
+    this.publicKey = publicKey;
+  }
 
-    getPublicKey(): Buffer {
-        return this.publicKey;
-    }
+  getPublicKey(): string {
+    return new TextDecoder().decode(this.publicKey);
+  }
 
-    getPrivateKey(): Buffer {
-        throw new NKeysError(NKeysErrorCode.PublicKeyOnly);
-    }
+  getPrivateKey(): Uint8Array {
+    throw new NKeysError(NKeysErrorCode.PublicKeyOnly);
+  }
 
-    getSeed(): Buffer {
-        throw new NKeysError(NKeysErrorCode.PublicKeyOnly);
-    }
+  getSeed(): Uint8Array {
+    throw new NKeysError(NKeysErrorCode.PublicKeyOnly);
+  }
 
-    sign(_: Buffer): Buffer {
-        throw new NKeysError(NKeysErrorCode.CannotSign);
-    }
+  sign(_: Uint8Array): Uint8Array {
+    throw new NKeysError(NKeysErrorCode.CannotSign);
+  }
 
-    verify(input: Buffer, sig: Buffer): boolean {
-        let buf = Codec._decode(this.publicKey);
-        return ed25519.sign.detached.verify(input, sig, buf.slice(1));
-    }
+  verify(input: Uint8Array, sig: Uint8Array): boolean {
+    let buf = Codec._decode(this.publicKey);
+    return sign_detached_verify(input, sig, buf.slice(1));
+  }
 }

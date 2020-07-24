@@ -12,12 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-export {}
-
-// new avajs seems to be looking for observable but it is not exported
-declare global {
-    interface SymbolConstructor {
-        readonly observable: symbol
-    }
-}
+export {
+  createPair,
+  createAccount,
+  createUser,
+  createOperator,
+  fromPublic,
+  fromSeed,
+} from "./nkeys.ts";

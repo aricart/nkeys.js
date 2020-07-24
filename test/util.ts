@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The NATS Authors
+ * Copyright 2018-2020 The NATS Authors
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,12 +13,26 @@
  * limitations under the License.
  */
 
-import test from "ava";
-import {dump} from "../src/util";
+import {
+  assert,
+  fail,
+} from "https://deno.land/std@0.61.0/testing/asserts.ts";
 
+export function assertThrowsErrorCode(fn: () => any, ...codes: string[]) {
+  try {
+    fn();
+    fail("failed to throw error");
+  } catch (err) {
+    assertErrorCode(err, ...codes);
+  }
+}
 
-test('buffer string rep', (t) => {
-    // this is for coverage completeness
-    dump(Buffer.from("hello"), "");
-    t.pass();
-});
+export function assertErrorCode(err: Error, ...codes: string[]) {
+  const { code } = err as { code?: string };
+  assert(code);
+
+  const ok = codes.find((c) => {
+    return code.indexOf(c) !== -1;
+  });
+  assert(ok);
+}

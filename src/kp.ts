@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The NATS Authors
+ * Copyright 2018-2020 The NATS Authors
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,44 +13,48 @@
  * limitations under the License.
  */
 
-import * as ed25519 from "tweetnacl";
-import {Codec} from "./codec";
-import {KeyPair, Prefix} from "./nkeys";
+import {
+  sign_keyPair_fromSeed,
+  sign_detached,
+  sign_detached_verify,
+} from "../deps/deps.js";
+import { Codec } from "./codec.ts";
+import { KeyPair, Prefix } from "./nkeys.ts";
 
 export class KP implements KeyPair {
-    seed: Buffer;
-    constructor(seed: Buffer) {
-        this.seed = seed;
-    }
+  seed: Uint8Array;
+  constructor(seed: Uint8Array) {
+    this.seed = seed;
+  }
 
-    getRawSeed(): Buffer {
-        let sd = Codec.decodeSeed(this.seed);
-        return sd.buf
-    }
+  getRawSeed(): Uint8Array {
+    let sd = Codec.decodeSeed(this.seed);
+    return sd.buf;
+  }
 
-    getSeed(): Buffer {
-        return this.seed;
-    }
+  getSeed(): Uint8Array {
+    return this.seed;
+  }
 
-    getPublicKey(): Buffer {
-        let sd = Codec.decodeSeed(this.seed);
-        let kp = ed25519.sign.keyPair.fromSeed(this.getRawSeed());
-        return Codec.encode(sd.prefix, Buffer.from(kp.publicKey))
-    };
+  getPublicKey(): string {
+    const sd = Codec.decodeSeed(this.seed);
+    const kp = sign_keyPair_fromSeed(this.getRawSeed());
+    const buf = Codec.encode(sd.prefix, kp.publicKey);
+    return new TextDecoder().decode(buf);
+  }
 
-    getPrivateKey(): Buffer {
-        let kp = ed25519.sign.keyPair.fromSeed(this.getRawSeed());
-        return Codec.encode(Prefix.Private, Buffer.from(kp.secretKey))
-    }
+  getPrivateKey(): Uint8Array {
+    const kp = sign_keyPair_fromSeed(this.getRawSeed());
+    return Codec.encode(Prefix.Private, kp.secretKey);
+  }
 
-    sign(input: Buffer): Buffer {
-        let kp = ed25519.sign.keyPair.fromSeed(this.getRawSeed());
-        let a = ed25519.sign.detached(input, kp.secretKey);
-        return Buffer.from(a.buffer);
-    }
+  sign(input: Uint8Array): Uint8Array {
+    const kp = sign_keyPair_fromSeed(this.getRawSeed());
+    return sign_detached(input, kp.secretKey);
+  }
 
-    verify(input: Buffer, sig: Buffer): boolean {
-        let kp = ed25519.sign.keyPair.fromSeed(this.getRawSeed());
-        return ed25519.sign.detached.verify(input, sig, kp.publicKey);
-    }
+  verify(input: Uint8Array, sig: Uint8Array): boolean {
+    const kp = sign_keyPair_fromSeed(this.getRawSeed());
+    return sign_detached_verify(input, sig, kp.publicKey);
+  }
 }
