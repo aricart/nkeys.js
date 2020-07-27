@@ -32,7 +32,10 @@ export function assertErrorCode(err: Error, ...codes: string[]) {
   assert(code);
 
   const ok = codes.find((c) => {
-    return code.indexOf(c) !== -1;
+    return code === c;
   });
+  if (!ok) {
+    debugger;
+  }
   assert(ok);
 }

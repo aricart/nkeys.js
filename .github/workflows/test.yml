@@ -1,4 +1,4 @@
-name: NATS.deno
+name: nkeys.js
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         run: ls -lg
 
       - name: Lint
-        run: deno fmt --check
+        run: deno fmt --check src/*.ts test/*.ts nkeys.d.ts
 
       - name: Test
         env:

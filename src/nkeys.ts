@@ -17,8 +17,6 @@ import { KP } from "./kp.ts";
 import { PublicKey } from "./public.ts";
 import { Codec } from "./codec.ts";
 
-export const VERSION = "1.0.16";
-
 export function createPair(prefix: Prefix): KeyPair {
   const rawSeed = randomBytes(32);
   let str = Codec.encodeSeed(prefix, new Uint8Array(rawSeed));
@@ -100,6 +98,12 @@ export interface KeyPair {
    * @throws NKeysError
    */
   verify(input: Uint8Array, sig: Uint8Array): boolean;
+
+  /**
+   * Clears the secret stored in the keypair. After clearing
+   * a keypair cannot be used or recovered.
+   */
+  clear(): void;
 }
 
 export enum Prefix {
@@ -178,11 +182,12 @@ export enum NKeysErrorCode {
   InvalidSeed = "nkeys: invalid seed",
   InvalidEncoding = "nkeys: invalid encoded key",
   InvalidSignature = "nkeys: signature verification failed",
-  CannotSign = "nkeys: can not sign, no private key available",
+  CannotSign = "nkeys: cannot sign, no private key available",
   PublicKeyOnly = "nkeys: no seed or private key available",
   InvalidChecksum = "nkeys: invalid checksum",
   SerializationError = "nkeys: serialization error",
   ApiError = "nkeys: api error",
+  ClearedPair = "nkeys: pair is cleared",
 }
 
 export class NKeysError extends Error {

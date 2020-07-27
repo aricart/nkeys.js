@@ -65,6 +65,9 @@ function test(kp: KeyPair, kind: string) {
   assertThrowsErrorCode(() => {
     pub.getSeed();
   }, NKeysErrorCode.PublicKeyOnly);
+
+  testClear(kp);
+  testClear(pub);
 }
 
 Deno.test("basics - operator", () => {
@@ -203,7 +206,7 @@ Deno.test("basics - fromSeed should reject decoding bad public key", () => {
   }, NKeysErrorCode.InvalidChecksum);
 });
 
-Deno.test("public key cannot sign", () => {
+Deno.test("basics - public key cannot sign", () => {
   assertThrowsErrorCode(() => {
     const a = createAccount();
     const pks = a.getPublicKey();
@@ -214,7 +217,7 @@ Deno.test("public key cannot sign", () => {
   }, NKeysErrorCode.CannotSign);
 });
 
-Deno.test("from public rejects non-public keys", () => {
+Deno.test("basics - from public rejects non-public keys", () => {
   assertThrowsErrorCode(() => {
     const a = createAccount();
     const pks = a.getSeed();
@@ -222,7 +225,7 @@ Deno.test("from public rejects non-public keys", () => {
   }, NKeysErrorCode.InvalidPublicKey);
 });
 
-Deno.test("test valid prefixes", () => {
+Deno.test("basics - test valid prefixes", () => {
   let valid = ["S", "P", "O", "N", "C", "A", "U"];
   valid.forEach((v: string) => {
     assert(Prefixes.startsWithValidPrefix(v));
@@ -237,3 +240,30 @@ Deno.test("test valid prefixes", () => {
     }
   });
 });
+
+function testClear(kp: KeyPair) {
+  kp.clear();
+
+  assertThrowsErrorCode(() => {
+    kp.getPublicKey();
+  }, NKeysErrorCode.ClearedPair);
+
+  assertThrowsErrorCode(() => {
+    kp.getPrivateKey();
+  }, NKeysErrorCode.ClearedPair);
+
+  assertThrowsErrorCode(() => {
+    kp.getSeed();
+  }, NKeysErrorCode.ClearedPair);
+
+  assertThrowsErrorCode(() => {
+    const data = new TextEncoder().encode("hello");
+    kp.sign(data);
+  }, NKeysErrorCode.ClearedPair);
+
+  assertThrowsErrorCode(() => {
+    const data = new TextEncoder().encode("hello");
+    const sig = kp.sign(data);
+    kp.verify(data, sig);
+  }, NKeysErrorCode.ClearedPair);
+}

@@ -21,30 +21,53 @@ import { KeyPair, NKeysError, NKeysErrorCode } from "./nkeys.ts";
  * KeyPair capable of verifying only
  */
 export class PublicKey implements KeyPair {
-  publicKey: Uint8Array;
+  publicKey?: Uint8Array;
 
   constructor(publicKey: Uint8Array) {
     this.publicKey = publicKey;
   }
 
   getPublicKey(): string {
+    if (!this.publicKey) {
+      throw new NKeysError(NKeysErrorCode.ClearedPair);
+    }
     return new TextDecoder().decode(this.publicKey);
   }
 
   getPrivateKey(): Uint8Array {
+    if (!this.publicKey) {
+      throw new NKeysError(NKeysErrorCode.ClearedPair);
+    }
     throw new NKeysError(NKeysErrorCode.PublicKeyOnly);
   }
 
   getSeed(): Uint8Array {
+    if (!this.publicKey) {
+      throw new NKeysError(NKeysErrorCode.ClearedPair);
+    }
     throw new NKeysError(NKeysErrorCode.PublicKeyOnly);
   }
 
   sign(_: Uint8Array): Uint8Array {
+    if (!this.publicKey) {
+      throw new NKeysError(NKeysErrorCode.ClearedPair);
+    }
     throw new NKeysError(NKeysErrorCode.CannotSign);
   }
 
   verify(input: Uint8Array, sig: Uint8Array): boolean {
+    if (!this.publicKey) {
+      throw new NKeysError(NKeysErrorCode.ClearedPair);
+    }
     let buf = Codec._decode(this.publicKey);
     return sign_detached_verify(input, sig, buf.slice(1));
+  }
+
+  clear(): void {
+    if (!this.publicKey) {
+      return;
+    }
+    this.publicKey.fill(0);
+    this.publicKey = undefined;
   }
 }
