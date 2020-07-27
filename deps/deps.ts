@@ -26,9 +26,19 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 //   For more information, please refer to <http://unlicense.org>
-export {
+//@ts-ignore
+import { Ed25519Helper } from "../src/mod.ts";
+
+import {
   sign_keyPair_fromSeed,
   sign_detached,
   sign_detached_verify,
   randomBytes,
 } from "https://deno.land/x/tweetnacl_deno/src/nacl.ts";
+
+export const denoHelper = {
+  fromSeed: sign_keyPair_fromSeed,
+  sign: sign_detached,
+  verify: sign_detached_verify,
+  randomBytes: randomBytes,
+} as Ed25519Helper;

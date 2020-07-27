@@ -15,15 +15,11 @@
 import { assertThrowsErrorCode } from "./util.ts";
 
 import {
-  assert,
   assertEquals,
-  fail,
 } from "https://deno.land/std@0.61.0/testing/asserts.ts";
 import { Codec } from "../src/codec.ts";
 import { NKeysErrorCode, Prefix } from "../src/nkeys.ts";
-// import ed25519 = require('tweetnacl');
-//
-//
+
 Deno.test("codec - should fail to encode non Uint8Array", () => {
   assertThrowsErrorCode(() => {
     //@ts-ignore

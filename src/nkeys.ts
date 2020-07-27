@@ -12,13 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { randomBytes } from "../deps/deps.js";
+//@ts-ignore
+// import { randomBytes } from "../deps/deps.js";
+//@ts-ignore
 import { KP } from "./kp.ts";
+//@ts-ignore
 import { PublicKey } from "./public.ts";
+//@ts-ignore
 import { Codec } from "./codec.ts";
+//@ts-ignore
+import { getEd25519Helper } from "./mod.ts";
 
 export function createPair(prefix: Prefix): KeyPair {
-  const rawSeed = randomBytes(32);
+  const rawSeed = getEd25519Helper().randomBytes(32);
   let str = Codec.encodeSeed(prefix, new Uint8Array(rawSeed));
   return new KP(str);
 }

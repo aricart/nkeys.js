@@ -12,6 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+interface SignPair {
+  publicKey: Uint8Array;
+  secretKey: Uint8Array;
+}
+
+export interface Ed25519Helper {
+  fromSeed(seed: Uint8Array): SignPair;
+  sign(data: Uint8Array, key: Uint8Array): Uint8Array;
+  verify(data: Uint8Array, sig: Uint8Array, pub: Uint8Array): boolean;
+  randomBytes(len: number): Uint8Array;
+}
+
+let helper: Ed25519Helper;
+export function setEd25519Helper(lib: Ed25519Helper) {
+  helper = lib;
+}
+
+export function getEd25519Helper() {
+  return helper;
+}
+
 export {
   createPair,
   createAccount,
@@ -19,4 +40,5 @@ export {
   createOperator,
   fromPublic,
   fromSeed,
+  //@ts-ignore
 } from "./nkeys.ts";

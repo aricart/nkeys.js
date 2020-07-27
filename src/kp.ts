@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 
-import {
-  sign_detached,
-  sign_detached_verify,
-  sign_keyPair_fromSeed,
-} from "../deps/deps.js";
+//@ts-ignore
 import { Codec } from "./codec.ts";
+//@ts-ignore
 import { KeyPair, NKeysError, NKeysErrorCode, Prefix } from "./nkeys.ts";
+//@ts-ignore
+import { getEd25519Helper } from "./mod.ts";
 
 export class KP implements KeyPair {
   seed?: Uint8Array;
@@ -47,7 +46,7 @@ export class KP implements KeyPair {
       throw new NKeysError(NKeysErrorCode.ClearedPair);
     }
     const sd = Codec.decodeSeed(this.seed);
-    const kp = sign_keyPair_fromSeed(this.getRawSeed());
+    const kp = getEd25519Helper().fromSeed(this.getRawSeed());
     const buf = Codec.encode(sd.prefix, kp.publicKey);
     return new TextDecoder().decode(buf);
   }
@@ -56,7 +55,7 @@ export class KP implements KeyPair {
     if (!this.seed) {
       throw new NKeysError(NKeysErrorCode.ClearedPair);
     }
-    const kp = sign_keyPair_fromSeed(this.getRawSeed());
+    const kp = getEd25519Helper().fromSeed(this.getRawSeed());
     return Codec.encode(Prefix.Private, kp.secretKey);
   }
 
@@ -64,16 +63,16 @@ export class KP implements KeyPair {
     if (!this.seed) {
       throw new NKeysError(NKeysErrorCode.ClearedPair);
     }
-    const kp = sign_keyPair_fromSeed(this.getRawSeed());
-    return sign_detached(input, kp.secretKey);
+    const kp = getEd25519Helper().fromSeed(this.getRawSeed());
+    return getEd25519Helper().sign(input, kp.secretKey);
   }
 
   verify(input: Uint8Array, sig: Uint8Array): boolean {
     if (!this.seed) {
       throw new NKeysError(NKeysErrorCode.ClearedPair);
     }
-    const kp = sign_keyPair_fromSeed(this.getRawSeed());
-    return sign_detached_verify(input, sig, kp.publicKey);
+    const kp = getEd25519Helper().fromSeed(this.getRawSeed());
+    return getEd25519Helper().verify(input, sig, kp.publicKey);
   }
 
   clear(): void {
