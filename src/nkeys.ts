@@ -12,38 +12,64 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//@ts-ignore
 import { KP } from "./kp.ts";
 import { PublicKey } from "./public.ts";
 import { Codec } from "./codec.ts";
-import { getEd25519Helper } from "./mod.ts";
+import { getEd25519Helper } from "./helper.ts";
 
+/**
+ * @ignore
+ */
 export function createPair(prefix: Prefix): KeyPair {
   const rawSeed = getEd25519Helper().randomBytes(32);
   let str = Codec.encodeSeed(prefix, new Uint8Array(rawSeed));
   return new KP(str);
 }
 
-export function createAccount(): KeyPair {
-  return createPair(Prefix.Account);
-}
-
-export function createUser(): KeyPair {
-  return createPair(Prefix.User);
-}
-
+/**
+ * Creates a KeyPair with an operator prefix
+ * @returns {KeyPair} Returns the created KeyPair.
+ */
 export function createOperator(): KeyPair {
   return createPair(Prefix.Operator);
 }
 
+/**
+ * Creates a KeyPair with an account prefix
+ * @returns {KeyPair} Returns the created KeyPair.
+ */
+export function createAccount(): KeyPair {
+  return createPair(Prefix.Account);
+}
+
+/**
+ * Creates a KeyPair with an user prefix
+ * @returns {KeyPair} Returns the created KeyPair.
+ */
+export function createUser(): KeyPair {
+  return createPair(Prefix.User);
+}
+
+/**
+ * @ignore
+ */
 export function createCluster(): KeyPair {
   return createPair(Prefix.Cluster);
 }
 
+/**
+ * @ignore
+ */
 export function createServer(): KeyPair {
   return createPair(Prefix.Server);
 }
 
+/**
+ * Creates a KeyPair from a specified public key
+ * @param {string} Public key in string format
+ * @returns {KeyPair} Returns the created KeyPair.
+ * @see KeyPair#getPublicKey
+ */
 export function fromPublic(src: string): KeyPair {
   const ba = new TextEncoder().encode(src);
   const raw = Codec._decode(ba);
@@ -54,6 +80,12 @@ export function fromPublic(src: string): KeyPair {
   throw new NKeysError(NKeysErrorCode.InvalidPublicKey);
 }
 
+/**
+ * Creates a KeyPair from a specified seed.
+ * @param {Uint8Array} The seed key in Uint8Array
+ * @returns {KeyPair} Returns the created KeyPair.
+ * @see KeyPair#getSeed
+ */
 export function fromSeed(src: Uint8Array): KeyPair {
   Codec.decodeSeed(src);
   // if we are here it decoded
@@ -107,6 +139,9 @@ export interface KeyPair {
   clear(): void;
 }
 
+/**
+ * Various Prefixes
+ */
 export enum Prefix {
   //Seed is the version byte used for encoded NATS Seeds
   Seed = 18 << 3, // Base32-encodes to 'S...'
@@ -131,7 +166,7 @@ export enum Prefix {
 }
 
 /**
- * Internal utility for testing prefixes
+ * @private
  */
 export class Prefixes {
   static isValidPublicPrefix(prefix: Prefix): boolean {
@@ -175,6 +210,9 @@ export class Prefixes {
   }
 }
 
+/**
+ * Possible error codes on exceptions thrown by the library.
+ */
 export enum NKeysErrorCode {
   InvalidPrefixByte = "nkeys: invalid prefix byte",
   InvalidKey = "nkeys: invalid key",

@@ -17,21 +17,23 @@ import {
   assert,
   assertEquals,
 } from "https://deno.land/std@0.61.0/testing/asserts.ts";
-import { KP } from "../src/kp.ts";
 import {
   createAccount,
-  createCluster,
   createOperator,
   createPair,
-  createServer,
   createUser,
   fromPublic,
   fromSeed,
   KeyPair,
   NKeysErrorCode,
+} from "../modules/esm/mod.ts";
+import {
+  createCluster,
+  createServer,
   Prefix,
   Prefixes,
 } from "../src/nkeys.ts";
+import { KP } from "../src/kp.ts";
 import { Codec } from "../src/codec.ts";
 import { assertThrowsErrorCode } from "./util.ts";
 

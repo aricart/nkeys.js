@@ -3,7 +3,7 @@ import {
   join,
   resolve,
   basename,
-  extname
+  extname,
 } from "https://deno.land/std@0.61.0/path/mod.ts";
 
 const argv = parse(
@@ -15,8 +15,8 @@ const argv = parse(
     boolean: true,
     string: ["out"],
     default: {
-      o: "build"
-    }
+      o: "build",
+    },
   },
 );
 
@@ -29,10 +29,10 @@ const out = resolve(argv.o);
 
 // collect a list of all the files
 const files: string[] = [];
-for(const d of dirs) {
+for (const d of dirs) {
   for await (const fn of Deno.readDir(d)) {
     const ext = extname(fn.name);
-    if(ext === ".ts" || ext === ".js") {
+    if (ext === ".ts" || ext === ".js") {
       files.push(join(d, fn.name));
     }
   }
@@ -40,15 +40,17 @@ for(const d of dirs) {
 
 dirs.flat();
 
-if(argv.debug) {
+if (argv.debug) {
   console.log(`src: ${dirs.join(" ")}`);
   console.log(`out: ${out}`);
   console.log(`files: ${files.join(",")}`);
   Deno.exit(0);
 }
 
-if(!dirs.length || argv.h || argv.help) {
-  console.log(`deno run --allow-all cjs-fix-imports [--debug] [--out build/] dir/ dir2/`);
+if (!dirs.length || argv.h || argv.help) {
+  console.log(
+    `deno run --allow-all cjs-fix-imports [--debug] [--out build/] dir/ dir2/`,
+  );
   Deno.exit(1);
 }
 
@@ -58,7 +60,6 @@ await Deno.lstat(out)
     await Deno.mkdir(out);
   });
 
-
 // process each file - remove extensions from requires/import
 for (const fn of files) {
   const data = await Deno.readFile(fn);
@@ -67,7 +68,7 @@ for (const fn of files) {
   mod = mod.replace(/require\("(\S+).[j|t]s"\)/gim, 'require("$1")');
   const target = join(out, basename(fn));
   await Deno.writeFile(target, new TextEncoder().encode(mod));
-  if(txt.length !== mod.length) {
+  if (txt.length !== mod.length) {
     console.log(`${target}`);
   }
 }

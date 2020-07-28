@@ -15,7 +15,7 @@
 
 import { Codec } from "./codec.ts";
 import { KeyPair, NKeysError, NKeysErrorCode } from "./nkeys.ts";
-import { getEd25519Helper } from "./mod.ts";
+import { getEd25519Helper } from "./helper.ts";
 
 /**
  * KeyPair capable of verifying only

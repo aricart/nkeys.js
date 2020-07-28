@@ -5,6 +5,7 @@ examples/
 modules/
 src/
 test/
+node_test/
 tsconfig.json
 .DS_Store
 .idea

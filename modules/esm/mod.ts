@@ -1,4 +1,4 @@
 import { denoHelper } from "./deps.ts";
-//@ts-ignore
-import { setEd25519Helper } from "../src/mod.ts";
+import { setEd25519Helper } from "../../src/helper.ts";
 setEd25519Helper(denoHelper);
+export * from "../../src/mod.ts";

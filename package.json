@@ -7,10 +7,12 @@
   "scripts": {
     "init": "mkdir -p build",
     "clean": "rm -Rf build/ lib/ nkeys.d.ts nkeys.mjs",
-    "fmt": "deno fmt src/ examples/ modules/",
-    "cjs": "deno run --allow-all bin/cjs-fix-imports.ts -o build/ src/ modules/cjs/",
+    "fmt": "deno fmt src/ examples/ modules/ test/ node_test",
+    "cjs": "deno run --allow-all bin/cjs-fix-imports.ts -o build/ src/ modules/cjs/ node_test/",
     "stage": "npm run init && npm run cjs && tsc",
-    "prepare": "npm run stage && deno bundle modules/esm/mod.ts nkeys.mjs && tsc"
+    "prepare": "npm run stage && deno bundle modules/esm/mod.ts nkeys.mjs && tsc",
+    "test": "npm run prepare && ava --verbose -T 15000",
+    "doc": "node_modules/.bin/typedoc --options ./typedoc.json && touch ./docs/.nojekyll"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,16 @@
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
-    "typescript": "^4.0.0-dev.20200727"
+    "typescript": "^4.0.0-dev.20200727",
+    "ts-node": "^8.10.2",
+    "ava": "^3.11.0",
+    "typedoc": "^0.17.6"
+  },
+  "ava": {
+    "failFast": true,
+    "require": [],
+    "files": [
+      "./node_test/*.js"
+    ]
   }
 }

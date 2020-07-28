@@ -26,8 +26,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 //   For more information, please refer to <http://unlicense.org>
-//@ts-ignore
-import { Ed25519Helper } from "../src/mod.ts";
+import { Ed25519Helper } from "../../src/helper.ts";
 
 import {
   sign_keyPair_fromSeed,

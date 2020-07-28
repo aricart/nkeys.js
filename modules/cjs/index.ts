@@ -8,7 +8,7 @@ const helper = {
 };
 
 //@ts-ignore
-const { setEd25519Helper } = require("./mod.ts");
+const { setEd25519Helper } = require("./helper.ts");
 setEd25519Helper(helper);
 
 //@ts-ignore

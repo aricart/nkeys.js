@@ -15,7 +15,7 @@
 
 import { Codec } from "./codec.ts";
 import { KeyPair, NKeysError, NKeysErrorCode, Prefix } from "./nkeys.ts";
-import { getEd25519Helper } from "./mod.ts";
+import { getEd25519Helper } from "./helper.ts";
 
 export class KP implements KeyPair {
   seed?: Uint8Array;
