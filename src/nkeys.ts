@@ -140,7 +140,7 @@ export interface KeyPair {
 }
 
 /**
- * Various Prefixes
+ * @ignore
  */
 export enum Prefix {
   //Seed is the version byte used for encoded NATS Seeds

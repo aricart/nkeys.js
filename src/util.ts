@@ -13,10 +13,18 @@
  * limitations under the License.
  */
 
+/**
+ * Encode binary data to a base64 string
+ * @param {Uint8Array} bytes to encode to base64
+ */
 export function encode(bytes: Uint8Array): string {
   return btoa(String.fromCharCode(...bytes));
 }
 
+/**
+ * Decode a base64 encoded string to a binary Uint8Array
+ * @param {string} base64 encoded string
+ */
 export function decode(b64str: string) {
   // if we were URL encoded, some characters will be
   // wrong - replace underscores and - with / and +
@@ -31,6 +39,9 @@ export function decode(b64str: string) {
   return bytes;
 }
 
+/**
+ * @ignore
+ */
 export function dump(buf: Uint8Array, msg?: string): void {
   if (msg) {
     console.log(msg);

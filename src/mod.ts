@@ -23,3 +23,8 @@ export {
   NKeysError,
   NKeysErrorCode,
 } from "./nkeys.ts";
+
+export {
+  encode,
+  decode
+} from "./util.ts";

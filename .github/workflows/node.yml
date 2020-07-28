@@ -17,23 +17,21 @@ jobs:
     strategy:
       matrix:
         deno-version: [1.2.0]
+        node-version: [10.x, 12.x, 14.x]
 
     steps:
-      - name: Git Checkout Deno Module
+      - name: checkout nkeys
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
 
-      - name: Use Deno Version ${{ matrix.deno-version }}
+      - name: setup deno ${{ matrix.deno-version }}
         uses: denolib/setup-deno@master
         with:
           deno-version: ${{ matrix.deno-version }}
 
-      - name: ls
-        run: ls -lg
-
-      - name: Lint
-        run: deno fmt --check src/*.ts test/*.ts nkeys.d.ts
+      - name: lint
+        run: deno fmt --check src/*.ts test/*.ts
 
       - name: Test
         env:

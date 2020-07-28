@@ -18,7 +18,7 @@ import { KeyPair, NKeysError, NKeysErrorCode } from "./nkeys.ts";
 import { getEd25519Helper } from "./helper.ts";
 
 /**
- * KeyPair capable of verifying only
+ * @ignore
  */
 export class PublicKey implements KeyPair {
   publicKey?: Uint8Array;

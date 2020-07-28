@@ -17,11 +17,16 @@ import { crc16 } from "./crc16.ts";
 import { NKeysError, NKeysErrorCode, Prefix, Prefixes } from "./nkeys.ts";
 import { base32 } from "./base32.ts";
 
+/**
+ * @ignore
+ */
 export interface SeedDecode {
   prefix: Prefix;
   buf: Uint8Array;
 }
-
+/**
+ * @ignore
+ */
 export class Codec {
   static encode(prefix: Prefix, src: Uint8Array): Uint8Array {
     if (!src || !(src instanceof Uint8Array)) {

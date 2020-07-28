@@ -7,7 +7,7 @@
     "excludeNotExported": true,
     "stripInternal": true,
     "theme": "minimal",
-    "out": "/tmp/out_docs",
+    "out": "docs/",
     "src": "lib/nkeys.js"
 }
 

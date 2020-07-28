@@ -16,7 +16,9 @@
 // Fork of https://github.com/LinusU/base32-encode
 // and https://github.com/LinusU/base32-decode to support returning
 // buffers without padding.
-
+/**
+ * @ignore
+ */
 export class base32 {
   static alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 

@@ -14,6 +14,9 @@
  */
 
 // An implementation of crc16 according to CCITT standards for XMODEM.
+/**
+ * @ignore
+ */
 const crc16tab = new Uint16Array([
   0x0000,
   0x1021,
@@ -273,6 +276,9 @@ const crc16tab = new Uint16Array([
   0x1ef0,
 ]);
 
+/**
+ * @ignore
+ */
 export class crc16 {
   // crc16 returns the crc for the data provided.
   static checksum(data: Uint8Array): number {
