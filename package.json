@@ -14,6 +14,9 @@
     "test": "npm run prepare && ava --verbose -T 15000",
     "doc": "node_modules/.bin/typedoc --options ./typedoc.json && touch ./docs/.nojekyll"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com//nats-io/ts-nkeys"
@@ -27,6 +30,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@types/node": "^14.0.26",
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "text-encoding": "^0.7.0",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {

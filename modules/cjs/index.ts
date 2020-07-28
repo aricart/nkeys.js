@@ -14,6 +14,16 @@ const helper = {
   sign: nacl.sign.detached,
 };
 
+// This here to support node 10.
+if (typeof TextEncoder !== 'function') {
+  //@ts-ignore
+  const TextEncodingPolyfill = require('text-encoding');
+  //@ts-ignore
+  global.TextEncoder = TextEncodingPolyfill.TextEncoder;
+  //@ts-ignore
+  global.TextDecoder = TextEncodingPolyfill.TextDecoder;
+}
+
 /**
  * @ignore
  */
