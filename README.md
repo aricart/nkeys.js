@@ -1,31 +1,45 @@
-# ts-nkeys
+# nkeys.js
 
 
-A public-key signature system based on Ed25519 for the [NATS ecosystem system](https://nats.io) in JavaScript and Typescript.
+A public-key signature system based on Ed25519 for the [NATS ecosystem system](https://nats.io) for JavaScript.
 
 [![license](https://img.shields.io/github/license/nats-io/ts-nats.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![nkeys.js](https://github.com/aricart/nkeys.js/workflows/nkeys.js/badge.svg)](https://github.com/aricart/nkeys.js/actions)
-[![Coveralls github branch](https://img.shields.io/coveralls/github/nats-io/ts-nkeys/master.svg)](https://coveralls.io/github/nats-io/ts-nkeys)
-[![npm](https://img.shields.io/npm/v/ts-nkeys.svg)](https://www.npmjs.com/package/ts-nkeys)
-[![npm](https://img.shields.io/npm/dt/ts-nkeys.svg)](https://www.npmjs.com/package/ts-nkeys)
+[![npm](https://img.shields.io/npm/v/nkeys.svg)](https://www.npmjs.com/package/nkeys)
+[![npm](https://img.shields.io/npm/dt/nkeys.svg)](https://www.npmjs.com/package/nkeys)
 
-ts-nkeys is a typescript nats library for node that for generating nkeys.
+The nkeys.js library works in Deno, Node.js, and the browser!
 
 ## Installation
-
-```bash
-npm install ts-nkeys
+For your Deno projects:
+```javascript
+import { createUser, fromPublic, fromSeed } from "https://deno.land/x/nkeys.js/modules/esm/mod.ts";
 ```
 
-## Basic Usage
+On node, and browsers you can get a build from npm:
+```bash
+npm install nkeys.js
+```
 
-```typescript
+In your node projects:
+```javascript
+  const {createUser, fromSeed, fromPublic} = require("nkeys.js");
+
+```
+
+On your browser projects, make available the `node/nkeys.js/nkeys.mjs`, and then
+```javascript
 import {
   createUser,
   fromPublic,
   fromSeed,
-} from "src/mod.ts";
+} from "https://host/path/nkeys.mjs";
+```
 
+
+## Basic Usage
+
+```typescript
 // create an user nkey KeyPair (can also create accounts, operators, etc).
 const user = createUser();
 
