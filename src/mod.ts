@@ -26,5 +26,5 @@ export {
 
 export {
   encode,
-  decode
+  decode,
 } from "./util.ts";

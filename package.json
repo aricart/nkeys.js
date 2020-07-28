@@ -7,7 +7,7 @@
   "scripts": {
     "init": "mkdir -p build",
     "clean": "rm -Rf build/ lib/ nkeys.d.ts nkeys.mjs",
-    "fmt": "deno fmt src/ examples/ modules/ test/ node_test",
+    "fmt": "deno fmt src/ examples/ modules/ test/ node_test/",
     "cjs": "deno run --allow-all bin/cjs-fix-imports.ts -o build/ src/ modules/cjs/ node_test/",
     "stage": "npm run init && npm run cjs && tsc",
     "prepare": "npm run stage && deno bundle modules/esm/mod.ts nkeys.mjs && tsc",

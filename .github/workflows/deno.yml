@@ -1,4 +1,4 @@
-name: nkeys.js
+name: nkeys-deno.js
 
 on:
   push:
@@ -17,10 +17,9 @@ jobs:
     strategy:
       matrix:
         deno-version: [1.2.0]
-        node-version: [10.x, 14.x]
 
     steps:
-      - name: checkout nkeys
+      - name: checkout project
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
@@ -30,13 +29,26 @@ jobs:
         with:
           deno-version: ${{ matrix.deno-version }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
       - name: lint
-        run: deno fmt --check src/*.ts test/*.ts modules/*/*.ts
+        run: deno fmt --check src/ test/ modules/ node_test/
 
-      - run: npm ci
-      - run: npm test
+      - name: test
+        env:
+          TMPDIR: ${{ runner.temp }}
+          CI: true
+        run: deno test --failfast
+
+      - name: build nkeys.mjs
+        run: deno bundle src/mod.ts nkeys.mjs
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: |
+          startsWith(github.ref, 'refs/tags/') &&
+          !startsWith(github.ref, 'refs/tags/std/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            nkeys.mjs
+          draft: true

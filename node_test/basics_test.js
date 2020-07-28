@@ -32,26 +32,26 @@ function testClear(t, kp) {
 
   t.throws(() => {
     kp.getPublicKey();
-  }, { code:NKeysErrorCode.ClearedPair });
+  }, { code: NKeysErrorCode.ClearedPair });
 
   t.throws(() => {
     kp.getPrivateKey();
-  }, { code:NKeysErrorCode.ClearedPair });
+  }, { code: NKeysErrorCode.ClearedPair });
 
   t.throws(() => {
     kp.getSeed();
-  }, { code:NKeysErrorCode.ClearedPair });
+  }, { code: NKeysErrorCode.ClearedPair });
 
   t.throws(() => {
     const data = new TextEncoder().encode("hello");
     kp.sign(data);
-  }, { code:NKeysErrorCode.ClearedPair });
+  }, { code: NKeysErrorCode.ClearedPair });
 
   t.throws(() => {
     const data = new TextEncoder().encode("hello");
     const sig = kp.sign(data);
     kp.verify(data, sig);
-  }, { code:NKeysErrorCode.ClearedPair });
+  }, { code: NKeysErrorCode.ClearedPair });
 }
 
 function doTest(t, kp, kind) {
@@ -78,12 +78,12 @@ function doTest(t, kp, kind) {
 
   t.throws(() => {
     pub.getPrivateKey();
-  }, { code:NKeysErrorCode.PublicKeyOnly });
+  }, { code: NKeysErrorCode.PublicKeyOnly });
   t.true(pub.verify(data, sig));
 
   t.throws(() => {
     pub.getSeed();
-  }, { code:NKeysErrorCode.PublicKeyOnly });
+  }, { code: NKeysErrorCode.PublicKeyOnly });
 
   testClear(t, kp);
   testClear(t, pub);

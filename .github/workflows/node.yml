@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         deno-version: [1.2.0]
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [10.x, 14.x]
 
     steps:
       - name: checkout nkeys
@@ -30,26 +30,10 @@ jobs:
         with:
           deno-version: ${{ matrix.deno-version }}
 
-      - name: lint
-        run: deno fmt --check src/*.ts test/*.ts
-
-      - name: Test
-        env:
-          TMPDIR: ${{ runner.temp }}
-          CI: true
-        run: deno test --failfast
-
-      - name: build nkeys.mjs
-        run: deno bundle src/mod.ts nkeys.mjs
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: |
-          startsWith(github.ref, 'refs/tags/') &&
-          !startsWith(github.ref, 'refs/tags/std/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: setup nodejs ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          files: |
-            nkeys.mjs
-          draft: true
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm ci
+      - run: npm test
