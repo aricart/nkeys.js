@@ -13,11 +13,8 @@
  * limitations under the License.
  */
 
-//@ts-ignore
 import { Codec } from "./codec.ts";
-//@ts-ignore
 import { KeyPair, NKeysError, NKeysErrorCode, Prefix } from "./nkeys.ts";
-//@ts-ignore
 import { getEd25519Helper } from "./mod.ts";
 
 export class KP implements KeyPair {

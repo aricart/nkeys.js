@@ -13,14 +13,9 @@
  * limitations under the License.
  */
 //@ts-ignore
-// import { randomBytes } from "../deps/deps.js";
-//@ts-ignore
 import { KP } from "./kp.ts";
-//@ts-ignore
 import { PublicKey } from "./public.ts";
-//@ts-ignore
 import { Codec } from "./codec.ts";
-//@ts-ignore
 import { getEd25519Helper } from "./mod.ts";
 
 export function createPair(prefix: Prefix): KeyPair {

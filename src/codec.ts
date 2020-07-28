@@ -13,11 +13,8 @@
  * limitations under the License.
  */
 
-//@ts-ignore
 import { crc16 } from "./crc16.ts";
-//@ts-ignore
 import { NKeysError, NKeysErrorCode, Prefix, Prefixes } from "./nkeys.ts";
-//@ts-ignore
 import { base32 } from "./base32.ts";
 
 export interface SeedDecode {

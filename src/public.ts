@@ -13,13 +13,8 @@
  * limitations under the License.
  */
 
-//@ts-ignore
-// import { sign_detached_verify } from "../deps/deps.js";
-//@ts-ignore
 import { Codec } from "./codec.ts";
-//@ts-ignore
 import { KeyPair, NKeysError, NKeysErrorCode } from "./nkeys.ts";
-//@ts-ignore
 import { getEd25519Helper } from "./mod.ts";
 
 /**
