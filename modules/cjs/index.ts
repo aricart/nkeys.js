@@ -15,9 +15,9 @@ const helper = {
 };
 
 // This here to support node 10.
-if (typeof TextEncoder !== 'function') {
+if (typeof TextEncoder !== "function") {
   //@ts-ignore
-  const TextEncodingPolyfill = require('text-encoding');
+  const TextEncodingPolyfill = require("text-encoding");
   //@ts-ignore
   global.TextEncoder = TextEncodingPolyfill.TextEncoder;
   //@ts-ignore

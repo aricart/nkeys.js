@@ -11,7 +11,7 @@
     "cjs": "deno run --allow-all bin/cjs-fix-imports.ts -o build/ src/ modules/cjs/ node_test/",
     "stage": "npm run init && npm run cjs && tsc",
     "prepare": "npm run stage && deno bundle modules/esm/mod.ts nkeys.mjs && tsc",
-    "test": "npm run prepare && ava --verbose -T 15000",
+    "test": "npm run prepare && ava --verbose",
     "doc": "node_modules/.bin/typedoc --options ./typedoc.json && touch ./docs/.nojekyll"
   },
   "engines": {
